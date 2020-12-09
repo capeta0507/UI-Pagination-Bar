@@ -40,3 +40,10 @@ Secret key : 6wK882suToEl_XLY43SPgpV2qv28VNel6zNfaes0Jck
 
 可以得到 json response
 ![](https://i.imgur.com/qyk2vRY.png)
+
+### 影像、影片網站
+1. (圖檔)[Unsplash](https://unsplash.com/)
+2. (圖檔)[Pexels](https://www.pexels.com/)
+3. (影像壓縮) [SHORT PIXEL](https://shortpixel.com/)
+4. (電影資料庫)[TMDb](https://www.themoviedb.org/?language=zh-TW)
+
