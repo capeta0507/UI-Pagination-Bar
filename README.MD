@@ -4,6 +4,11 @@
 搜尋關鍵字：web pagination design。
 當API取得資料之後，如何表達資料、如何翻頁、分頁，是前端 UI 介面所要學習的。
 
+### Github 作品
+[UI_Pagination_Bar](https://github.com/capeta0507/UI_Pagination_Bar)
+
+### 設計樣板
+
 下圖為搜尋設計：
 ![](https://i.imgur.com/AkKNmzD.png)
 
@@ -17,6 +22,7 @@
 1. [Photo Search Using the Unsplash API](https://www.youtube.com/watch?v=Rvv8xheoINc)
 2. [How to make a flat design search box | HTML & CSS](https://www.youtube.com/watch?v=csY6KW7cIUM)
 3. [Pagination UI Design Using Html CSS and jQuery | next() Prev()](https://www.youtube.com/watch?v=nRUbvKTiq8Y)
+4. [How To Create Pagination Design using HTML and CSS || UI Tutorial](https://www.youtube.com/watch?v=mU--VbRr-hM)
 
 ### Unsplash 註冊申請
 1. 到 Unsplash 去註冊一個帳號
