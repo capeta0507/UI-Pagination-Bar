@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Search</title>
   <link rel="stylesheet" href="style.css">
+  <script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
   <h1>Unsplash API photos search</h1>
@@ -22,5 +24,55 @@
       </tr>
     </table>
   </div>
+  <ul class="pagination">
+    <li>
+      <a href="#" class="prev"> < </a>
+    </li>
+    <li class="pageNumber active">
+      <a href="#">1</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">2</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">3</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">4</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">5</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">6</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">7</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">8</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">9</a>
+    </li>
+    <li class="pageNumber">
+      <a href="#">10</a>
+    </li>
+    <li>
+      <a href="#" class="next"> > </a>
+    </li>
+  </ul>
+  <script>
+    $(document).ready(function(){
+      $('.next').on('click', function(){
+        $('.pagination').find('.pageNumber.active').next().addClass('active');
+        $('.pagination').find('.pageNumber.active').prev().removeClass('active');
+      })
+      $('.prev').on('click', function(){
+        $('.pagination').find('.pageNumber.active').prev().addClass('active');
+        $('.pagination').find('.pageNumber.active').next().removeClass('active');
+      })
+    })
+  </script>
 </body>
 </html>

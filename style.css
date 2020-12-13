@@ -36,3 +36,42 @@
     height: auto;
     margin-top: 5px;
 }
+ul{
+    position: absolute;
+    background-color: #fff;
+    display: flex;
+    padding: 10px 20px;
+    border-radius: 50px;
+    left: 50%;
+    margin-left: -340px;
+    margin-top: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+}
+ul li{
+    list-style: none;
+    line-height: 47px;
+    margin: 0 5px;
+}
+ul li.pageNumber{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50%;
+}
+ul li a{
+    display: block;
+    text-decoration: none;
+    color: #777;
+    font-weight: 600;
+    border-radius: 50%;
+}
+ul li.pageNumber:hover a, ul li.pageNumber.active{
+    background: #333;
+    color: #fff;
+}
+ul li:first-child{
+    margin-right: 30px;
+    font-weight: 700;
+    font-size: 20px;
+}
