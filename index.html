@@ -15,77 +15,164 @@
     <table class="elementsContainer">
       <tr>
         <td>
-          <input type="text" placeholder="Search" class="search">
+          <input id="mySearch" type="text" placeholder="Search" class="search">
         </td>
         <td>
-          <a id="mySubmit" href="#">
+          <a id="mySubmit" href="javascript:void(0);">
             <img class="search_icon" src="img/baseline_search.png" alt="">
           </a>
         </td>
       </tr>
     </table>
   </div>
-  <ul class="pagination">
-    <li>
-      <a href="#" class="prev"> < </a>
-    </li>
-    <li class="pageNumber active">
-      <a href="#">1</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">2</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">3</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">4</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">5</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">6</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">7</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">8</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">9</a>
-    </li>
-    <li class="pageNumber">
-      <a href="#">10</a>
-    </li>
-    <li>
-      <a href="#" class="next"> > </a>
-    </li>
-  </ul>
+  <div id="myCpntainer" class="main_container">
+    <div class="card">
+      <div class="card_img">
+        <img src="https://images.unsplash.com/photo-1532906619279-a4b7267faa66?crop=entropy&cs=srgb&fm=jpg&ixid=MXwxODkyMDF8MHwxfHNlYXJjaHwxfHxmMXxlbnwwfDB8fA&ixlib=rb-1.2.1&q=85" alt="">
+      </div>
+      <div class="card_content">
+        <div class="card_name">
+          <img class="head_img" src="https://images.unsplash.com/profile-fb-1484539966-12de6566b969.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32" alt="">
+          <div>Carl Jorgensen</div>
+        </div>
+        <div class="card_des">
+          Taken at the British Grand Prix at Silverstone in the UK. Never realised how fast these cars until now. The television does not do it justice.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mypage_content" style="display: none;">
+    <ul class="pagination">
+      <li>
+        <a href="javascript:void(0);" class="prev"> < </a>
+      </li>
+      <li class="pageNumber active">
+        <a href="javascript:void(0);">1</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">2</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">3</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">4</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">5</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">6</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">7</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">8</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">9</a>
+      </li>
+      <li class="pageNumber">
+        <a href="javascript:void(0);">10</a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" class="next"> > </a>
+      </li>
+    </ul>
+  </div>
   <script>
-    $(document).ready(function(){
-      $('.next').on('click', function(){
-        $('.pagination').find('.pageNumber.active').next().addClass('active');
-        $('.pagination').find('.pageNumber.active').prev().removeClass('active');
-      })
-      $('.prev').on('click', function(){
-        $('.pagination').find('.pageNumber.active').prev().addClass('active');
-        $('.pagination').find('.pageNumber.active').next().removeClass('active');
-      })
-    })
+    // 當前頁碼
+    var page_num = 1;
+    // 大頁碼
+    var big_page = 1;
 
     // 獲取資料
 
     $('#mySubmit').on('click', function(){
-      const search = 'sky';
+      var search = $('#mySearch').val();
+      let search_resilt = '';
+      let page_list = ''
+      console.log(search);
       axios.get(
-        `https://api.unsplash.com/search/photos/?query=sky&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape`
+        `https://api.unsplash.com/search/photos/?query=${search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12`
       ).then(function(response){
-        console.log(response)
+        let result_data = response.data.results;
+        var total = response.data.total;
+        var total_page = response.data.total_pages;
+        console.log(result_data);
+        console.log(total);
+        console.log(total_page);
+        // 繪製畫面
+        result_data.map(data => {
+          search_resilt += `
+            <div class="card">
+              <div class="card_img">
+                <img src="${data.urls.small}" alt="">
+              </div>
+              <div class="card_content">
+                <div class="card_name">
+                  <img class="head_img" src="${data.user.profile_image.small}" alt="">
+                  <div>${data.user.name}</div>
+                </div>
+                <div class="card_des">
+                  ${data.description}
+                </div>
+              </div>
+            </div>
+          `
+        });
+
+        page_list += `
+          <li>
+            <a href="javascript:void(0);" class="prev"> < </a>
+          </li>
+        `
+        for(let x = 1; x<= 10; x++){
+          if(x == 1){
+            page_list += `
+              <li class="pageNumber active">
+                <a>1</a>
+              </li>
+            `
+          } else {
+            page_list += `
+              <li class="pageNumber">
+                <a>${x}</a>
+              </li>
+            `
+          }
+        }
+        page_list += `
+          <li>
+            <a href="javascript:void(0);" class="next"> > </a>
+          </li>
+        `
+        $('.pagination').html(page_list);
+
+        $('#myCpntainer').html(search_resilt);
+        $('.mypage_content').show();
       }).catch(function(error){
         console.log(error)
       })
+    })
+
+    $('.next').on('click', function(){
+      page_num++;
+      $('.pagination').find('.pageNumber.active').next().addClass('active');
+      $('.pagination').find('.pageNumber.active').prev().removeClass('active');
+      console.log('next_num', page_num);
+    })
+    $('.prev').on('click', function(){
+      page_num--;
+      if(page_num > 0){
+        $('.pagination').find('.pageNumber.active').prev().addClass('active');
+        $('.pagination').find('.pageNumber.active').next().removeClass('active');
+      } else {
+        alert('已是最前頁');
+        page_num = 1;
+      }
+      console.log('prev_num', page_num);
     })
   </script>
 </body>
