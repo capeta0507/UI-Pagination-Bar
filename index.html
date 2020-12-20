@@ -86,11 +86,14 @@
     var page_num = 1;
     // 大頁碼
     var big_page = 1;
+    // 現在搜尋的資料
+    var now_search = '';
 
     // 獲取資料
 
     $('#mySubmit').on('click', function(){
       var search = $('#mySearch').val();
+      now_search = search;
       let search_resilt = '';
       let page_list = ''
       console.log(search);
@@ -124,7 +127,7 @@
         });
 
         page_list += `
-          <li>
+          <li onclick="prev_page()">
             <a href="javascript:void(0);" class="prev"> < </a>
           </li>
         `
@@ -138,13 +141,13 @@
           } else {
             page_list += `
               <li class="pageNumber">
-                <a>${x}</a>
+                <a href="javascript:void(0);">${x}</a>
               </li>
             `
           }
         }
         page_list += `
-          <li>
+          <li onclick="next_page()">
             <a href="javascript:void(0);" class="next"> > </a>
           </li>
         `
@@ -157,15 +160,90 @@
       })
     })
 
-    $('.next').on('click', function(){
+    // $('.next').on('click', function(){
+    //   page_num++;
+    //   $('.pagination').find('.pageNumber.active').next().addClass('active');
+    //   $('.pagination').find('.pageNumber.active').prev().removeClass('active');
+    //   console.log('next_num', page_num);
+    // })
+    // $('.prev').on('click', function(){
+    //   page_num--;
+    //   if(page_num > 0){
+    //     $('.pagination').find('.pageNumber.active').prev().addClass('active');
+    //     $('.pagination').find('.pageNumber.active').next().removeClass('active');
+    //   } else {
+    //     alert('已是最前頁');
+    //     page_num = 1;
+    //   }
+    //   console.log('prev_num', page_num);
+    // })
+
+    function next_page(){
       page_num++;
       $('.pagination').find('.pageNumber.active').next().addClass('active');
       $('.pagination').find('.pageNumber.active').prev().removeClass('active');
       console.log('next_num', page_num);
-    })
-    $('.prev').on('click', function(){
+      axios.get(
+        `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
+      ).then(function(response){
+        let result_data = response.data.results;
+        let search_resilt = '';
+        // 繪製畫面
+        result_data.map(data => {
+          search_resilt += `
+            <div class="card">
+              <div class="card_img">
+                <img src="${data.urls.small}" alt="">
+              </div>
+              <div class="card_content">
+                <div class="card_name">
+                  <img class="head_img" src="${data.user.profile_image.small}" alt="">
+                  <div>${data.user.name}</div>
+                </div>
+                <div class="card_des">
+                  ${data.description}
+                </div>
+              </div>
+            </div>
+          `
+        });
+        $('#myCpntainer').html(search_resilt);
+      }).catch(function(error){
+        console.log(error)
+      })
+    }
+
+    function prev_page(){
       page_num--;
       if(page_num > 0){
+        axios.get(
+          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
+        ).then(function(response){
+          let result_data = response.data.results;
+          let search_resilt = '';
+          // 繪製畫面
+          result_data.map(data => {
+            search_resilt += `
+              <div class="card">
+                <div class="card_img">
+                  <img src="${data.urls.small}" alt="">
+                </div>
+                <div class="card_content">
+                  <div class="card_name">
+                    <img class="head_img" src="${data.user.profile_image.small}" alt="">
+                    <div>${data.user.name}</div>
+                  </div>
+                  <div class="card_des">
+                    ${data.description}
+                  </div>
+                </div>
+              </div>
+            `
+          });
+          $('#myCpntainer').html(search_resilt);
+        }).catch(function(error){
+          console.log(error)
+        })
         $('.pagination').find('.pageNumber.active').prev().addClass('active');
         $('.pagination').find('.pageNumber.active').next().removeClass('active');
       } else {
@@ -173,7 +251,7 @@
         page_num = 1;
       }
       console.log('prev_num', page_num);
-    })
+    }
   </script>
 </body>
 </html>
