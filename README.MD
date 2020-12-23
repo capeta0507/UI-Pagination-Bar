@@ -53,3 +53,34 @@ Secret key : 6wK882suToEl_XLY43SPgpV2qv28VNel6zNfaes0Jck
 3. (影像壓縮) [SHORT PIXEL](https://shortpixel.com/)
 4. (電影資料庫)[TMDb](https://www.themoviedb.org/?language=zh-TW)
 
+### 所需要的程式邏輯
+前端人員在 API 呼叫後端，取得資料後，一般來講會取得符合條件的多筆紀錄，以陣列整批取得，並且以 JSON 結構來表達紀錄。
+
+取得多筆資料之後，必須妥善的以變數與運算來表達。以下是會用到的變數參考。
+
+---
+計算筆數與頁數
+1. 總筆數：recTotal。
+2. 單頁筆數：perPage。
+3. 總頁數：pageTotal = Math.ceil(recTotal / perPage)。
+4. 大頁數：perBigPage (代表每幾頁切成大頁)(通常是10)。
+5. 總大頁數：bigPageTotal = Math.ceil(pageTotal / perBigPage)。
+6. 本大頁次：currBigPageNo = 1 (由 1 開始到 bigPageTotal)。
+---
+計算翻頁與顯示
+1. 本頁頁次：currPageNo = 1 (由 1 開始到 pageTotal)。
+2. 本頁起始紀錄：currRecord_Begin = (currPageNo - 1) * perPage。
+3. 本頁結束紀錄：currRecord_End = currRecord_Begin + perPage - 1，不能超過 (recTotal - 1)，代表最後1頁的最後1筆。
+---
+點選頁號碼切換頁次
+1. currPageNo = 選定的頁號碼。
+2. 計算 currRecord_Begin。
+3. 計算 currRecord_End，如果超過 (recTotal - 1)，currRecord_End = rec_Total - 1。
+4. 顯示該頁紀錄 currRecord_Begin ~ currRecord_End 顯示循環。
+---
+上1頁、下1頁、上10頁、下10頁
+1. 上1頁：計算 currPageNo = currPageNo - 1，不得低於 1。
+2. 下1頁：計算 currPageNo = currPageNo + 1，不得高於 pageTotal。
+3. 上10頁：計算 currBigPageNo = currBigPageNo - 1，不得低於 1。
+4. 下10頁：計算 currBigPageNo = currBigPageNo + 1，不得高於 bigPageTotal。
+5. 上10頁、下10頁，每次有異動，重新計算 currPageNo = (currBigPageNo - 1) * perBigPage + 1。
