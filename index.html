@@ -88,6 +88,8 @@
     var big_page = 1;
     // 現在搜尋的資料
     var now_search = '';
+    // 總頁數
+    var total_page = 0;
 
     // 獲取資料
 
@@ -102,7 +104,7 @@
       ).then(function(response){
         let result_data = response.data.results;
         var total = response.data.total;
-        var total_page = response.data.total_pages;
+        total_page = response.data.total_pages;
         console.log(result_data);
         console.log(total);
         console.log(total_page);
@@ -246,40 +248,47 @@
 
     function next_page(){
       page_num++;
-      $('.pagination').find('.pageNumber.active').next().addClass('active');
-      $('.pagination').find('.pageNumber.active').prev().removeClass('active');
-      console.log('next_num', page_num);
-      axios.get(
-        `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
-      ).then(function(response){
-        let result_data = response.data.results;
-        let search_resilt = '';
-        // 繪製畫面
-        result_data.map(data => {
-          search_resilt += `
-            <div class="card">
-              <div class="card_img">
-                <img src="${data.urls.small}" alt="">
-              </div>
-              <div class="card_content">
-                <div class="card_name">
-                  <img class="head_img" src="${data.user.profile_image.small}" alt="">
-                  <div>${data.user.name}</div>
+      if(page_num > total_page){
+        alert('已到最底頁了');
+        page_num = total_page
+      } else {
+        // $('.pagination').find('.pageNumber.active').next().addClass('active');
+        // $('.pagination').find('.pageNumber.active').prev().removeClass('active');
+        console.log('next_num', page_num);
+        axios.get(
+          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
+        ).then(function(response){
+          let result_data = response.data.results;
+          let search_resilt = '';
+          // 繪製畫面
+          result_data.map(data => {
+            search_resilt += `
+              <div class="card">
+                <div class="card_img">
+                  <img src="${data.urls.small}" alt="">
                 </div>
-                <div class="card_des">
-                  ${data.description}
+                <div class="card_content">
+                  <div class="card_name">
+                    <img class="head_img" src="${data.user.profile_image.small}" alt="">
+                    <div>${data.user.name}</div>
+                  </div>
+                  <div class="card_des">
+                    ${data.description}
+                  </div>
                 </div>
               </div>
-            </div>
-          `
-        });
-        $('#myCpntainer').html(search_resilt);
+            `
+          });
+          $('#myCpntainer').html(search_resilt);
+          // 頁籤重繪
+          pageList_change();
 
-        // 滑到最上面
-        scrollTop();
-      }).catch(function(error){
-        console.log(error)
-      })
+          // 滑到最上面
+          scrollTop();
+        }).catch(function(error){
+          console.log(error)
+        })
+      }
     }
 
     function prev_page(){
@@ -313,8 +322,11 @@
         }).catch(function(error){
           console.log(error)
         })
-        $('.pagination').find('.pageNumber.active').prev().addClass('active');
-        $('.pagination').find('.pageNumber.active').next().removeClass('active');
+        // $('.pagination').find('.pageNumber.active').prev().addClass('active');
+        // $('.pagination').find('.pageNumber.active').next().removeClass('active');
+
+        // 頁籤重繪
+        pageList_change();
 
         // 滑到最上面
         scrollTop();
@@ -323,6 +335,38 @@
         page_num = 1;
       }
       // console.log('prev_num', page_num);
+    }
+
+    function pageList_change(){
+      let page_list = '';
+
+      // 頁籤重繪
+      page_list += `
+        <li onclick="prev_page()">
+          <a href="javascript:void(0);" class="prev"> < </a>
+        </li>
+      `
+      for(let x = 1; x<= 10; x++){
+        if(x == page_num){
+          page_list += `
+            <li class="pageNumber active" onclick="page_click(${x})">
+              <a>${x}</a>
+            </li>
+          `
+        } else {
+          page_list += `
+            <li class="pageNumber" onclick="page_click(${x})">
+              <a href="javascript:void(0);">${x}</a>
+            </li>
+          `
+        }
+      }
+      page_list += `
+        <li onclick="next_page()">
+          <a href="javascript:void(0);" class="next"> > </a>
+        </li>
+      `
+      $('.pagination').html(page_list);
     }
 
     function scrollTop(){
