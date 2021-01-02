@@ -305,10 +305,10 @@
     }
 
     function nextBigPage(){
-      big_page++;
-      if(big_page*10-10 > total_page){
+      currBigPageNo++;
+      if(currBigPageNo*10-10 > total_page){
         alert('已到最底頁了');
-        big_page = big_page - 1
+        currBigPageNo = currBigPageNo - 1
       } else {
 
         page_num = big_page*10-9
@@ -317,7 +317,7 @@
 
         // 重新抓取資料
         axios.get(
-          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=${perPage}&page=${page_num}`
+          `https://api.unsplash.com/search/photos/?query=${search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=${perPage}&page=${currPageNo}`
         ).then(function(response){
           let result_data = response.data.results;
           let search_resilt = '';
@@ -353,13 +353,13 @@
     }
 
     function prevBigPage(){
-      big_page--;
+      currBigPageNo--;
       if(big_page > 0){
         page_num = big_page*10-9
 
         // 重新抓取資料
         axios.get(
-          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=${perPage}&page=${page_num}`
+          `https://api.unsplash.com/search/photos/?query=${search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=${perPage}&page=${currPageNo}`
         ).then(function(response){
           let result_data = response.data.results;
           let search_resilt = '';
