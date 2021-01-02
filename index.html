@@ -36,8 +36,8 @@
           <div>Carl Jorgensen</div>
         </div>
         <div class="card_des">
-          2018-07-29T19:25:44-04:00 <br>
-          <img class="likes" src="img/likes.png" alt=""> 125
+          <div class="likeTag"><img class="likes" src="img/likes.png" alt=""> 125</div>
+          <div class="dateTag">2018-07-29T19:25:44-04:00</div>
         </div>
       </div>
     </div>
@@ -85,85 +85,35 @@
     <div class="prevBig" onclick="prevBigPage()">-10</div>
   </div>
   <script>
-    // 當前頁碼
-    var page_num = 1;
-    // 大頁碼
-    var big_page = 1;
-    // 現在搜尋的資料
-    var now_search = '';
-    // 總頁數
-    var total_page = 0;
+    var search = ''
+    var recTotal = 0;       // 總筆數
+    var perPage = 12;       // 單頁筆數
+    var pageTotal = 0;      // 總頁數
+    var perBigPage = 10;    // 大頁數
+    var bigPageTotal  = 1;  // 總大頁數
+    var currBigPageNo = 1;  // 本大頁次
+
+    var currPageNo = 1;        // 本頁頁次
+    var currRecord_Begin = 0;  // 本頁起始紀錄
+    var currRecord_End = 9;    // 本頁結束紀錄
+    // var page_num = 1;       // 當前頁碼
+    // var big_page = 1;       // 大頁碼
+    // var now_search = '';    // 現在搜尋的資料
+    // var total_page = 0;     // 總頁數
+
+    var imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
 
     // 獲取資料
 
     $('#mySubmit').on('click', function(){
-      var search = $('#mySearch').val();
-      now_search = search;
+      search = $('#mySearch').val();
+      
       let search_resilt = '';
       let page_list = '';
       console.log(search);
-      axios.get(
-        `https://api.unsplash.com/search/photos/?query=${search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12`
-      ).then(function(response){
-        let result_data = response.data.results;
-        var total = response.data.total;
-        total_page = response.data.total_pages;
-        console.log(result_data);
-        console.log(total);
-        console.log(total_page);
-        // 繪製畫面
-        result_data.map(data => {
-          search_resilt += `
-            <div class="card">
-              <div class="card_img">
-                <img src="${data.urls.small}" alt="">
-              </div>
-              <div class="card_content">
-                <div class="card_name">
-                  <img class="head_img" src="${data.user.profile_image.small}" alt="">
-                  <div>${data.user.name}</div>
-                </div>
-                <div class="card_des">
-                  ${data.created_at} <br>
-                  <img class="likes" src="img/likes.png" alt=""> ${data.likes}
-                </div>
-              </div>
-            </div>
-          `
-        });
-
-        page_list += `
-          <li onclick="prev_page()">
-            <a href="javascript:void(0);" class="prev"> < </a>
-          </li>
-        `
-        for(let x = 1; x<= 10; x++){
-          if(x == 1){
-            page_list += `
-              <li class="pageNumber active" onclick="page_click(${x})">
-                <a>${x}</a>
-              </li>
-            `
-          } else {
-            page_list += `
-              <li class="pageNumber" onclick="page_click(${x})">
-                <a href="javascript:void(0);">${x}</a>
-              </li>
-            `
-          }
-        }
-        page_list += `
-          <li onclick="next_page()">
-            <a href="javascript:void(0);" class="next"> > </a>
-          </li>
-        `
-        $('.pagination').html(page_list);
-
-        $('#myCpntainer').html(search_resilt);
-        $('.mypage_content').show();
-      }).catch(function(error){
-        console.log(error)
-      })
+      currPageNo = 1;
+      imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+      read_show();
     })
 
     // $('.next').on('click', function(){
@@ -183,19 +133,22 @@
     //   }
     //   console.log('prev_num', page_num);
     // })
+    if(currPageNo == 1){
+      $('.prev').hide();
+    }
 
-    function page_click(num){
-      console.log(num);
-      page_num = num;
-      // 頁籤重繪
-      pageList_change();
-
-      // 重新抓取資料
+    function read_show(){
+      let search_resilt = '';
+      let page_list = '';
       axios.get(
-        `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
+        imageAPI
       ).then(function(response){
         let result_data = response.data.results;
-        let search_resilt = '';
+        recTotal = response.data.total;
+        pageTotal = response.data.total_pages;
+        console.log(result_data);
+        console.log('總筆數', recTotal);
+        console.log('總頁數', pageTotal);
         // 繪製畫面
         result_data.map(data => {
           search_resilt += `
@@ -209,111 +162,107 @@
                   <div>${data.user.name}</div>
                 </div>
                 <div class="card_des">
-                  ${data.created_at} <br>
-                  <img class="likes" src="img/likes.png" alt=""> ${data.likes}
+                  <div class="likeTag"><img class="likes" src="img/likes.png" alt=""> ${data.likes}</div>
+                  <div class="dateTag">${data.created_at}</div>
                 </div>
               </div>
             </div>
           `
         });
-        $('#myCpntainer').html(search_resilt);
 
-        // 滑到最上面
-        scrollTop();
+        page_list += `
+          <li class="w-12" onclick="prev_page()">
+            <a href="javascript:void(0);" class="prev"> < </a>
+          </li>
+        `
+        for(let x = 1; x<= 10; x++){
+          if(x == currPageNo){
+            page_list += `
+              <li class="pageNumber active" onclick="page_click(${x})">
+                <a>${x}</a>
+              </li>
+            `
+          } else {
+            page_list += `
+              <li class="pageNumber" onclick="page_click(${x})">
+                <a href="javascript:void(0);">${x}</a>
+              </li>
+            `
+          }
+        }
+        page_list += `
+          <li class="w-12" onclick="next_page()">
+            <a href="javascript:void(0);" class="next"> > </a>
+          </li>
+        `
+        $('.pagination').html(page_list);
+
+        $('#myCpntainer').html(search_resilt);
+        $('.mypage_content').show();
+
+        if(currPageNo >= 2 && currPageNo <= 9){
+          $('.next').show();
+          $('.prev').show();
+        }
+        if(currPageNo == 1){
+          $('.next').show();
+          $('.prev').hide();
+        }
+        if(currPageNo == 10){
+          $('.next').hide();
+          $('.prev').show();
+        }
       }).catch(function(error){
         console.log(error)
       })
     }
 
+    function page_click(num){
+      console.log(num);
+      currPageNo = num;
+      search = $('#mySearch').val();
+      imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+      // 頁籤重繪
+      // pageList_change();
+
+      // 重新抓取資料
+      read_show();
+      // 滑到最上面
+      scrollTop();
+    }
+
     function next_page(){
-      page_num++;
-      if(page_num > total_page){
-        alert('已到最底頁了');
-        page_num = total_page
+      currPageNo++;
+      if(currPageNo == 10){
+        // alert('已到最底頁了');
+        // currPageNo = pageTotal
       } else {
         // $('.pagination').find('.pageNumber.active').next().addClass('active');
         // $('.pagination').find('.pageNumber.active').prev().removeClass('active');
-        console.log('next_num', page_num);
-        axios.get(
-          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
-        ).then(function(response){
-          let result_data = response.data.results;
-          let search_resilt = '';
-          // 繪製畫面
-          result_data.map(data => {
-            search_resilt += `
-              <div class="card">
-                <div class="card_img">
-                  <img src="${data.urls.small}" alt="">
-                </div>
-                <div class="card_content">
-                  <div class="card_name">
-                    <img class="head_img" src="${data.user.profile_image.small}" alt="">
-                    <div>${data.user.name}</div>
-                  </div>
-                  <div class="card_des">
-                    ${data.created_at} <br>
-                    <img class="likes" src="img/likes.png" alt=""> ${data.likes}
-                  </div>
-                </div>
-              </div>
-            `
-          });
-          $('#myCpntainer').html(search_resilt);
-          // 頁籤重繪
-          pageList_change();
-
-          // 滑到最上面
-          scrollTop();
-        }).catch(function(error){
-          console.log(error)
-        })
+        console.log('next_num', currPageNo);
+        search = $('#mySearch').val();
+        imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+        read_show();
+        // 滑到最上面
+        scrollTop();
       }
     }
 
     function prev_page(){
-      page_num--;
-      if(page_num > 0){
-        axios.get(
-          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
-        ).then(function(response){
-          let result_data = response.data.results;
-          let search_resilt = '';
-          // 繪製畫面
-          result_data.map(data => {
-            search_resilt += `
-              <div class="card">
-                <div class="card_img">
-                  <img src="${data.urls.small}" alt="">
-                </div>
-                <div class="card_content">
-                  <div class="card_name">
-                    <img class="head_img" src="${data.user.profile_image.small}" alt="">
-                    <div>${data.user.name}</div>
-                  </div>
-                  <div class="card_des">
-                    ${data.created_at} <br>
-                    <img class="likes" src="img/likes.png" alt=""> ${data.likes}
-                  </div>
-                </div>
-              </div>
-            `
-          });
-          $('#myCpntainer').html(search_resilt);
-        }).catch(function(error){
-          console.log(error)
-        })
-        // $('.pagination').find('.pageNumber.active').prev().addClass('active');
-        // $('.pagination').find('.pageNumber.active').next().removeClass('active');
-
-        // 頁籤重繪
-        pageList_change();
-
+      currPageNo--;
+      if(currPageNo > 0){
+        $('.prev').show();
+        search = $('#mySearch').val();
+        imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+        read_show();
         // 滑到最上面
         scrollTop();
+        // 頁籤重繪
+        // pageList_change();
       } else {
-        alert('已是最前頁');
-        page_num = 1;
+        $('.prev').hide();
+        // alert('已是最前頁');
+        // currPageNo = 1;
       }
       // console.log('prev_num', page_num);
     }
@@ -364,7 +313,7 @@
 
         // 重新抓取資料
         axios.get(
-          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
+          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=${perPage}&page=${page_num}`
         ).then(function(response){
           let result_data = response.data.results;
           let search_resilt = '';
@@ -381,8 +330,8 @@
                     <div>${data.user.name}</div>
                   </div>
                   <div class="card_des">
-                    ${data.created_at} <br>
-                    <img class="likes" src="img/likes.png" alt=""> ${data.likes}
+                    <div class="likeTag"><img class="likes" src="img/likes.png" alt=""> ${data.likes}</div>
+                    <div class="dateTag">${data.created_at}</div>
                   </div>
                 </div>
               </div>
@@ -406,7 +355,7 @@
 
         // 重新抓取資料
         axios.get(
-          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=12&page=${page_num}`
+          `https://api.unsplash.com/search/photos/?query=${now_search}&client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&per_page=${perPage}&page=${page_num}`
         ).then(function(response){
           let result_data = response.data.results;
           let search_resilt = '';
@@ -423,8 +372,8 @@
                     <div>${data.user.name}</div>
                   </div>
                   <div class="card_des">
-                    ${data.created_at} <br>
-                    <img class="likes" src="img/likes.png" alt=""> ${data.likes}
+                    <div class="likeTag"><img class="likes" src="img/likes.png" alt=""> ${data.likes}</div>
+                    <div class="dateTag">${data.created_at}</div>
                   </div>
                 </div>
               </div>
