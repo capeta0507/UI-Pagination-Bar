@@ -142,21 +142,25 @@ ul li:first-child{
 }
 .nextBig{
     position: absolute;
-    right: 16%;
-    top: 34%;
+    right: -11%;
+    top: 30%;
     padding: 5px 15px;
     border: 1px solid #333333;
-    background-color: #fff;
+    background-color: #333333;
+    border-radius: 10px;
+    color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     cursor: pointer;
 }
 .prevBig{
     position: absolute;
-    left: 18%;
-    top: 34%;
+    left: -10%;
+    top: 30%;
     padding: 5px 15px;
     border: 1px solid #333333;
-    background-color: #fff;
+    background-color: #333333;
+    border-radius: 10px;
+    color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     cursor: pointer;
 }
