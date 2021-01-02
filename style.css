@@ -14,7 +14,7 @@ h1{
 }
 .boxContainer{
     margin: auto;
-    margin-top: 30px;
+    margin-top: 10px;
     position: relative;
     width: 300px;
     height: 46px;
@@ -53,7 +53,7 @@ ul{
     border-radius: 50px;
     left: 50%;
     margin-left: -340px;
-    margin-top: 30px;
+    margin-top: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
 }
 ul li{
@@ -88,7 +88,7 @@ ul li:first-child{
 .main_container{
     max-width: 1200px;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 10px;
     padding-top: 15px;
     background-color: #f6f6f6;
     display: flex;

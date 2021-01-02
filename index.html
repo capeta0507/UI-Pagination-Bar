@@ -87,7 +87,7 @@
   <script>
     var search = ''
     var recTotal = 0;       // 總筆數
-    var perPage = 12;       // 單頁筆數
+    var perPage = 6;       // 單頁筆數
     var pageTotal = 0;      // 總頁數
     var perBigPage = 10;    // 大頁數
     var bigPageTotal  = 1;  // 總大頁數
@@ -194,6 +194,8 @@
           <li class="w-12" onclick="next_page()">
             <a href="javascript:void(0);" class="next"> > </a>
           </li>
+          <div class="nextBig" onclick="nextBigPage()">+10</div>
+          <div class="prevBig" onclick="prevBigPage()">-10</div>
         `
         $('.pagination').html(page_list);
 
@@ -296,6 +298,8 @@
         <li onclick="next_page()">
           <a href="javascript:void(0);" class="next"> > </a>
         </li>
+        <div class="nextBig" onclick="nextBigPage()">+10</div>
+        <div class="prevBig" onclick="prevBigPage()">-10</div>
       `
       $('.pagination').html(page_list);
     }
