@@ -41,6 +41,10 @@
       </div>
     </div>
   </div>
+
+  <a href="#" id="to-top" class="">
+    TOP
+  </a>
   
   <script>
     var API = "https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape"
@@ -61,14 +65,23 @@
     // var total_page = 0;     // 總頁數
 
     var imageAPI = API + `&query=${search}&per_page=${perPage}&page=${currPageNo}`
+    var toTopBun = document.getElementById('to-top');
 
     // window scroll Events
     // https://www.youtube.com/watch?v=V9CY0F4Wc7M
     window.addEventListener('scroll', function(){
+      // console.log('pageYOffset:' + window.pageYOffset);
+      // console.log('scrollHeight:' + document.documentElement.scrollHeight);
+      // console.log('window.innerHeight:' + window.innerHeight);
+      // console.log('window.scrollY:' + Math.ceil(window.scrollY));
+      // if (window.pageYOffset > 300){
+      //   console.log("window.pageYOffset > 300");
+      // }
       if((document.documentElement.scrollHeight - window.innerHeight) === Math.ceil(window.scrollY) ){
         console.log("bottom! ... append");
+        toTopBun.classList.add("active");  // 顯示 TOP 按鈕
+
         search = document.getElementById("mySearch").value;
-        
         let search_resilt = '';
         let page_list = '';
         console.log(search);
@@ -108,6 +121,8 @@
     // 獲取資料
     // javascript
       document.getElementById("mySubmit").addEventListener('click',function(){
+        toTopBun.classList.remove("active");  // 不顯示 TOP 按鈕
+
         search = document.getElementById("mySearch").value;
 
         let search_resilt = '';
@@ -191,11 +206,11 @@
         })
     }
 
-    function scrollTop(){
-      $("html, body").animate({
-        scrollTop: 0
-      }, 500);
-    }
+    // function scrollTop(){
+    //   $("html, body").animate({
+    //     scrollTop: 0
+    //   }, 500);
+    // }
   </script>
 </body>
 </html>
