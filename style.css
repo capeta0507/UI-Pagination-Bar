@@ -9,7 +9,9 @@ h1{
 }
 .mypage_content{
     position: relative;
-    width: 100%;
+    /* width: 100%; */
+    float: right;
+    left: -50%;
     height: 150px;
 }
 .boxContainer{
@@ -45,14 +47,13 @@ h1{
     height: auto;
     margin-top: 5px;
 }
-ul{
-    position: absolute;
+ul.pagination{
+    position: relative;
     background-color: #fff;
     display: flex;
     padding: 10px 20px;
     border-radius: 50px;
     left: 50%;
-    margin-left: -340px;
     margin-top: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
 }
@@ -142,7 +143,7 @@ ul li:first-child{
 }
 .nextBig{
     position: absolute;
-    right: -11%;
+    right: -75px;
     top: 30%;
     padding: 5px 15px;
     border: 1px solid #333333;
@@ -154,7 +155,7 @@ ul li:first-child{
 }
 .prevBig{
     position: absolute;
-    left: -10%;
+    left: -75px;
     top: 30%;
     padding: 5px 15px;
     border: 1px solid #333333;
