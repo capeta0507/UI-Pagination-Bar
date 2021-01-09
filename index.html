@@ -104,7 +104,9 @@
     // var now_search = '';    // 現在搜尋的資料
     // var total_page = 0;     // 總頁數
 
-    var imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+    var xOrientation = "landscape";
+    var APIStr = "https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA"
+    var imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
 
     // 獲取資料
 
@@ -115,7 +117,7 @@
       let page_list = '';
       console.log(search);
       currPageNo = 1;
-      imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+      imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
       read_show();
     })
 
@@ -264,7 +266,7 @@
       console.log(num);
       currPageNo = num;
       search = $('#mySearch').val();
-      imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+      imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
       // 頁籤重繪
       // pageList_change();
 
@@ -284,7 +286,7 @@
         // $('.pagination').find('.pageNumber.active').prev().removeClass('active');
         console.log('next_num', currPageNo);
         search = $('#mySearch').val();
-        imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+        imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
         read_show();
         // 滑到最上面
         scrollTop();
@@ -296,7 +298,7 @@
       if(currPageNo > 0){
         $('.prev').show();
         search = $('#mySearch').val();
-        imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+        imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
         read_show();
         // 滑到最上面
         scrollTop();
@@ -353,7 +355,7 @@
       if(currBigPageNo >= bigPageTotal){
         $('.nextBig').hide();
       }
-      imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+      imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
       read_show();
     }
 
@@ -365,7 +367,7 @@
       if(currBigPageNo == 1){
         $('.prevBig').hide();
       }
-      imageAPI = `https://api.unsplash.com/search/photos/?client_id=z2lKI1fv5HipWjpXTi6YFxymvT6Fg1z5mIDBIYK3RqA&page=1&orientation=landscape&query=${search}&per_page=${perPage}&page=${currPageNo}`
+      imageAPI = APIStr + `&orientation=${xOrientation}&query=${search}&per_page=${perPage}&page=${currPageNo}`
       read_show();
     }
 
